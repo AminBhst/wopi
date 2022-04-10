@@ -43,5 +43,6 @@ public class CheckFileInfo {
         this.readOnly = false;
         this.supportsLocks = false;
         this.supportsUpdate = true;
+        this.userCanNotWriteRelative = true;
     }
 }
