@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -33,11 +34,13 @@ public class WopiController {
     @GetMapping("/wopi/files/{fileId}")
     public CheckFileInfo wopi(@RequestParam(required = false) String letterUid,
                               @RequestParam(required = false) String username,
-                              @RequestParam(required = false) String letterContent) throws Exception {
+                              @RequestParam(required = false) String letterContent,
+                              HttpServletRequest request) throws Exception {
 
         if (StringUtils.isEmpty(letterContent)) {
             String fileName = letterUid + ".docx";
             log.info("UserName : " + username);
+            log.info("req user : " + request.getParameter("username"));
             XWPFDocument document = new XWPFDocument();
             try {
                 document.write(new FileOutputStream(fileName));
