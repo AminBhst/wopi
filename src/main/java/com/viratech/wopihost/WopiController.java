@@ -37,6 +37,7 @@ public class WopiController {
 
         if (StringUtils.isEmpty(letterContent)) {
             String fileName = letterUid + ".docx";
+            log.info("UserName : " + username);
             XWPFDocument document = new XWPFDocument();
             try {
                 document.write(new FileOutputStream(fileName));
