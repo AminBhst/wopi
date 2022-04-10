@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -35,11 +36,12 @@ public class WopiController {
     public CheckFileInfo wopi(@RequestParam(required = false) String letterUid,
                               @RequestParam(required = false) String username,
                               @RequestParam(required = false) String letterContent,
-                              HttpServletRequest request) throws Exception {
+                              HttpServletRequest request,
+                              @PathParam("fileId") String fileName) throws Exception {
 
         if (StringUtils.isEmpty(letterContent)) {
             log.info("REQ URI : " + request.getRequestURI());
-            String fileName = letterUid + ".docx";
+            String fn = letterUid + ".docx";
             log.info("UserName : " + username);
             log.info("req user : " + request.getParameter("username"));
             XWPFDocument document = new XWPFDocument();
@@ -48,11 +50,11 @@ public class WopiController {
                 log.info("Writing {}", fileName);
                 document.close();
                 CheckFileInfo cfi = new CheckFileInfo();
-                cfi.setBaseFileName(fileName);
+                cfi.setBaseFileName(fn);
                 cfi.setVersion("1");
                 cfi.setOwnerId(username);
                 cfi.setUserFriendlyName(username);
-                cfi.setSize(Files.size(Paths.get(fileName)));
+                cfi.setSize(Files.size(Paths.get(fn)));
                 return cfi;
             } catch (Throwable t) {
                 log.error("Error write", t);
