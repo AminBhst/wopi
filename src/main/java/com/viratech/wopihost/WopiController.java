@@ -7,7 +7,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.xwpf.usermodel.ParagraphAlignment;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
+import org.apache.poi.xwpf.usermodel.XWPFParagraph;
+import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +45,14 @@ public class WopiController {
             document.write(fos);
             fos.close();
             log.info("Writing {}", fileName);
-            document.close();
             CheckFileInfo cfi = new CheckFileInfo();
+
+            XWPFParagraph para2 = document.createParagraph();
+            para2.setAlignment(ParagraphAlignment.RIGHT);
+            XWPFRun para2Run = para2.createRun();
+            para2Run.setText("aaa");
+
+            document.close();
             cfi.setBaseFileName(fileName);
             cfi.setVersion("1");
             cfi.setOwnerId("Worddd");
