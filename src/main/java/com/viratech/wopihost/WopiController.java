@@ -44,6 +44,7 @@ public class WopiController {
             String fn = letterUid + ".docx";
             log.info("UserName : " + username);
             log.info("req user : " + request.getParameter("username"));
+            log.info("fileName : " + fileName);
             XWPFDocument document = new XWPFDocument();
             try {
                 document.write(new FileOutputStream(fileName));
