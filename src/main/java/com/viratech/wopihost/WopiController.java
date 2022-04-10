@@ -38,6 +38,7 @@ public class WopiController {
                               HttpServletRequest request) throws Exception {
 
         if (StringUtils.isEmpty(letterContent)) {
+            log.info("REQ URI : " + request.getRequestURI());
             String fileName = letterUid + ".docx";
             log.info("UserName : " + username);
             log.info("req user : " + request.getParameter("username"));
