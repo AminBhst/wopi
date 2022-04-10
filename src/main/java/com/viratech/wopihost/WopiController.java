@@ -8,10 +8,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
@@ -32,34 +29,23 @@ public class WopiController {
         this.configData = configData;
     }
 
-    @GetMapping("/wopi/files/{fileId}")
-    public CheckFileInfo wopi(@RequestParam(required = false) String letterUid,
-                              @RequestParam(required = false) String username,
-                              @RequestParam(required = false) String letterContent,
-                              HttpServletRequest request,
-                              @PathParam("fileId") String fileName) throws Exception {
-
-        if (StringUtils.isEmpty(letterContent)) {
-            log.info("REQ URI : " + request.getRequestURI());
-            String fn = letterUid + ".docx";
-            log.info("UserName : " + username);
-            log.info("req user : " + request.getParameter("username"));
-            log.info("fileName : " + fileName);
-            XWPFDocument document = new XWPFDocument();
-            try {
-                document.write(new FileOutputStream(fileName));
-                log.info("Writing {}", fileName);
-                document.close();
-                CheckFileInfo cfi = new CheckFileInfo();
-                cfi.setBaseFileName(fn);
-                cfi.setVersion("1");
-                cfi.setOwnerId(username);
-                cfi.setUserFriendlyName(username);
-                cfi.setSize(Files.size(Paths.get(fn)));
-                return cfi;
-            } catch (Throwable t) {
-                log.error("Error write", t);
-            }
+    @GetMapping("/wopi/files/{fileName}")
+    public CheckFileInfo wopi(@PathVariable("fileName") String fileName) throws Exception {
+        log.info("fileName : " + fileName);
+        XWPFDocument document = new XWPFDocument();
+        try {
+            document.write(new FileOutputStream(fileName));
+            log.info("Writing {}", fileName);
+            document.close();
+            CheckFileInfo cfi = new CheckFileInfo();
+            cfi.setBaseFileName(fileName);
+            cfi.setVersion("1");
+            cfi.setOwnerId("Worddd");
+            cfi.setUserFriendlyName("Worddd");
+            cfi.setSize(Files.size(Paths.get(fileName)));
+            return cfi;
+        } catch (Throwable t) {
+            log.error("Error write", t);
         }
         log.error("File not created");
         throw new Exception("wrffg");
