@@ -48,8 +48,7 @@ public class WopiController {
             XWPFParagraph para2 = document.createParagraph();
             para2.setAlignment(ParagraphAlignment.RIGHT);
             XWPFRun para2Run = para2.createRun();
-            para2Run.setText("aaa");
-
+            para2Run.setText("");
             document.write(fos);
             fos.close();
             document.close();
