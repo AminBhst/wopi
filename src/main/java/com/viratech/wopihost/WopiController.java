@@ -39,8 +39,8 @@ public class WopiController {
         XWPFDocument document = new XWPFDocument();
         try {
             FileOutputStream fos = new FileOutputStream(fileName);
-            fos.close();
             document.write(fos);
+            fos.close();
             log.info("Writing {}", fileName);
             document.close();
             CheckFileInfo cfi = new CheckFileInfo();
