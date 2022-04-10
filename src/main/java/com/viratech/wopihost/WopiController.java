@@ -9,12 +9,16 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
 import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -51,10 +55,23 @@ public class WopiController {
         throw new Exception("wrffg");
     }
 
-    @PostMapping("/wopi/files/{fileId}/contents")
-    public void updateFileContent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @PostMapping("/wopi/files/{fileName}/contents")
+    public void updateFileContent(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
+        FileInputStream fis = new FileInputStream(fileName);
+        BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
+        byte[] buffer = new byte[fis.available()];
+        fis.read(buffer);
+        response.reset();
+        response.addHeader("Content-Disposition",
+                "attachment;filename=" + new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+        URL url = new URL(fileName);
+        HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+        response.addHeader("Content-Length", String.valueOf(uc.getContentLengthLong()));
+        OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         response.setStatus(200);
-        response.flushBuffer();
+        toClient.write(buffer);
+        toClient.flush();
     }
 
     @GetMapping("/wopi/files/{fileName}/contents")
