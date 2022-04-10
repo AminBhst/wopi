@@ -40,6 +40,7 @@ public class WopiController {
             XWPFDocument document = new XWPFDocument();
             try {
                 document.write(new FileOutputStream(fileName));
+                log.info("Writing {}", fileName);
                 document.close();
                 CheckFileInfo cfi = new CheckFileInfo();
                 cfi.setBaseFileName(fileName);
