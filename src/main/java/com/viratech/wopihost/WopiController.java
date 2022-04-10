@@ -46,7 +46,7 @@ public class WopiController {
                 cfi.setVersion("1");
                 cfi.setOwnerId(username);
                 cfi.setUserFriendlyName(username);
-                cfi.setSize(String.valueOf(Files.size(Paths.get(fileName))));
+                cfi.setSize(Files.size(Paths.get(fileName)));
                 return cfi;
             } catch (Throwable t) {
                 log.error("Error write", t);

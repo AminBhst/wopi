@@ -15,7 +15,7 @@ public class CheckFileInfo {
     private String ownerId;
 
     @JsonProperty("Size")
-    private String size;
+    private Long size;
 
     @JsonProperty("Version")
     private String version;
