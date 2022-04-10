@@ -38,20 +38,6 @@ public class CheckFileInfo {
     @JsonProperty("UserCanNotWriteRelative")
     private boolean userCanNotWriteRelative;
 
-    private String demo = "{" +
-            "\"BaseFileName\":\"helloworld.odt\"," +
-            "\"OwnerId\":\"me\"," +
-            "\"Size\":4445," +
-            "\"UserId\":\"me\"," +
-            "\"Version\":\"1\"," +
-            "\"UserCanWrite\":true," +
-            "\"ReadOnly\":false," +
-            "\"SupportsLocks\":false," +
-            "\"SupportsUpdate\":true," +
-            "\"UserCanNotWriteRelative\":true," +
-            "\"UserFriendlyName\":\"some-name\"" +
-            "}";
-
     public CheckFileInfo() {
         this.userCanWrite = true;
         this.readOnly = false;
