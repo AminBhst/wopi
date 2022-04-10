@@ -5,16 +5,16 @@ import com.viratech.wopihost.dto.CheckFileInfo;
 import com.viratech.wopihost.dto.WopiDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.websocket.server.PathParam;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -49,5 +49,16 @@ public class WopiController {
         }
         log.error("File not created");
         throw new Exception("wrffg");
+    }
+
+    @PostMapping("/wopi/files/{fileId}/contents")
+    public void updateFileContent(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setStatus(200);
+        response.flushBuffer();
+    }
+
+    @GetMapping("/wopi/files/{fileName}/contents")
+    public byte[] getFileContent(@PathVariable("fileName") String fileName) throws FileNotFoundException, IOException {
+        return IOUtils.toByteArray(new FileInputStream(fileName));
     }
 }
