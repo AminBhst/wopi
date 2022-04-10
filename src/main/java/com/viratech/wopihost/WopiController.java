@@ -42,8 +42,6 @@ public class WopiController {
         XWPFDocument document = new XWPFDocument();
         try {
             FileOutputStream fos = new FileOutputStream(fileName);
-            document.write(fos);
-            fos.close();
             log.info("Writing {}", fileName);
             CheckFileInfo cfi = new CheckFileInfo();
 
@@ -52,6 +50,8 @@ public class WopiController {
             XWPFRun para2Run = para2.createRun();
             para2Run.setText("aaa");
 
+            document.write(fos);
+            fos.close();
             document.close();
             cfi.setBaseFileName(fileName);
             cfi.setVersion("1");
