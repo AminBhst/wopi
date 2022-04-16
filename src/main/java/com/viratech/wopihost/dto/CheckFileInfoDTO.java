@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class CheckFileInfo {
+public class CheckFileInfoDTO {
 
     @JsonProperty("BaseFileName")
     private String baseFileName;
@@ -38,7 +38,7 @@ public class CheckFileInfo {
     @JsonProperty("UserCanNotWriteRelative")
     private boolean userCanNotWriteRelative;
 
-    public CheckFileInfo() {
+    public CheckFileInfoDTO() {
         this.userCanWrite = true;
         this.readOnly = false;
         this.supportsLocks = false;
