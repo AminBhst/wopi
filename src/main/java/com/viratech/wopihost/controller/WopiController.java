@@ -82,7 +82,7 @@ public class WopiController {
     }
 
     @PostMapping("/files/{fileName}/contents")
-    public void updateFileContent(@RequestPart("file") MultipartFile file) throws IOException {
+    public void updateFileContent(@PathVariable("fileName") String fileName, @RequestBody byte[] bytes) throws IOException {
 //        FileInputStream fis = new FileInputStream(fileName);
 //        byte[] buffer = new byte[fis.available()];
 //        fis.read(buffer);
@@ -97,10 +97,8 @@ public class WopiController {
 //        response.setStatus(200);
 //        toClient.write(buffer);
 //        toClient.flush();
-        log.info("MUUUULTIIIIIII :");
-        log.info(file.getOriginalFilename());
-        log.info(file.getName());
-        log.info(String.valueOf(file.getSize()));
+        log.info("BYYYYTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES:::::");
+        log.info(bytes.toString());
     }
 
     @GetMapping("/files/{fileName}/contents")
