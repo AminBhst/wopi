@@ -83,22 +83,14 @@ public class WopiController {
 
     @PostMapping("/files/{fileName}/contents")
     public void updateFileContent(@PathVariable("fileName") String fileName, @RequestBody byte[] bytes) throws IOException {
-//        FileInputStream fis = new FileInputStream(fileName);
-//        byte[] buffer = new byte[fis.available()];
-//        fis.read(buffer);
-//        response.reset();
-//        response.addHeader("Content-Disposition",
-//                "attachment;filename=" + new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
-//        URL url = new URL(fileName);
-//        HttpURLConnection uc = (HttpURLConnection) url.openConnection();
-//        response.addHeader("Content-Length", String.valueOf(uc.getContentLengthLong()));
-//        OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-//        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-//        response.setStatus(200);
-//        toClient.write(buffer);
-//        toClient.flush();
-        log.info("BYYYYTEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEES:::::");
-        log.info(bytes.toString());
+        File file = Paths.get(configData.getWordFilesPath()).resolve(fileName).toFile();
+        try (FileOutputStream fop = new FileOutputStream(file)) {
+            fop.write(bytes);
+            fop.flush();
+        } catch (IOException e) {
+            log.error("postFile failed, errMsg: {}", e.getMessage());
+
+        }
     }
 
     @GetMapping("/files/{fileName}/contents")
