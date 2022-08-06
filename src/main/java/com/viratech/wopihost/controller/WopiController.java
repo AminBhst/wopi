@@ -10,7 +10,10 @@ import org.apache.poi.xwpf.usermodel.XWPFDocument;
 import org.apache.poi.xwpf.usermodel.XWPFParagraph;
 import org.apache.poi.xwpf.usermodel.XWPFRun;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,6 +24,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Date;
 
 @RestController
 @RequestMapping("/wopi")
@@ -95,12 +99,15 @@ public class WopiController {
     }
 
     @GetMapping("/files/{fileName}/contents")
-    public byte[] getFileContent(@PathVariable("fileName") String fileName) {
-        try {
-            return IOUtils.toByteArray(new FileInputStream(fileName));
-        } catch (Throwable t) {
-            log.error("Error occurred while retrieving contents!", t);
-            return null;
-        }
+    public ResponseEntity<InputStreamResource> getFileContent(@PathVariable("fileName") String fileName) throws IOException {
+
+        FileInputStream fileInputStream = new FileInputStream(Paths.get(configData.getWordFilesPath()).resolve(fileName).toFile());
+        InputStreamResource inputStreamResource = new InputStreamResource(fileInputStream);
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=" + fileName)
+                .contentLength(Files.size(Paths.get(configData.getWordFilesPath()).resolve(fileName)))
+                .lastModified(new Date().getTime())
+                .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                .body(inputStreamResource);
     }
 }
