@@ -35,17 +35,16 @@ public class WopiController {
     }
 
     @GetMapping("/files/{fileName}")
-    public CheckFileInfoDTO wopi(@PathVariable("fileName") String fileName, HttpServletRequest request) throws Exception {
-        log.info("fileName : " + fileName);
-        log.info("header : " + request.getHeader("headhead"));
+    public CheckFileInfoDTO wopi(@PathVariable("fileName") String fileName) throws Exception {
+        log.info("file : " + Paths.get(configData.getWordFilesPath()).resolve(fileName));
         try {
-            createEmptyWordDocument(fileName);
+//            createEmptyWordDocument(fileName);
             CheckFileInfoDTO cfi = new CheckFileInfoDTO();
             cfi.setBaseFileName(fileName);
             cfi.setVersion("1");
             cfi.setOwnerId("Worddd");
             cfi.setUserFriendlyName("Worddd");
-            cfi.setSize(Files.size(Paths.get(fileName)));
+            cfi.setSize(Files.size(Paths.get(configData.getWordFilesPath()).resolve(fileName)));
             return cfi;
         } catch (Throwable t) {
             log.error("Error write", t);
