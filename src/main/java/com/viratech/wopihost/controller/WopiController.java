@@ -15,6 +15,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -81,21 +82,25 @@ public class WopiController {
     }
 
     @PostMapping("/files/{fileName}/contents")
-    public void updateFileContent(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
-        FileInputStream fis = new FileInputStream(fileName);
-        byte[] buffer = new byte[fis.available()];
-        fis.read(buffer);
-        response.reset();
-        response.addHeader("Content-Disposition",
-                "attachment;filename=" + new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
-        URL url = new URL(fileName);
-        HttpURLConnection uc = (HttpURLConnection) url.openConnection();
-        response.addHeader("Content-Length", String.valueOf(uc.getContentLengthLong()));
-        OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
-        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
-        response.setStatus(200);
-        toClient.write(buffer);
-        toClient.flush();
+    public void updateFileContent(@RequestPart("file") MultipartFile file) throws IOException {
+//        FileInputStream fis = new FileInputStream(fileName);
+//        byte[] buffer = new byte[fis.available()];
+//        fis.read(buffer);
+//        response.reset();
+//        response.addHeader("Content-Disposition",
+//                "attachment;filename=" + new String(fileName.getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1));
+//        URL url = new URL(fileName);
+//        HttpURLConnection uc = (HttpURLConnection) url.openConnection();
+//        response.addHeader("Content-Length", String.valueOf(uc.getContentLengthLong()));
+//        OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+//        response.setContentType(MediaType.APPLICATION_OCTET_STREAM_VALUE);
+//        response.setStatus(200);
+//        toClient.write(buffer);
+//        toClient.flush();
+        log.info("MUUUULTIIIIIII :");
+        log.info(file.getOriginalFilename());
+        log.info(file.getName());
+        log.info(String.valueOf(file.getSize()));
     }
 
     @GetMapping("/files/{fileName}/contents")
